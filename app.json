@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "Community App",
+    "slug": "community-app-mobile",
+    "version": "1.2.0",
+    "icon": "./assets/icon.png",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#10233f"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.community.app",
+      "buildNumber": "1.2.0"
+    },
+    "android": {
+      "package": "com.community.app",
+      "versionCode": 12,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1859d1"
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "86529fcd-4807-4b62-90c0-efabdf8be61e"
+      }
+    }
+  }
+}
