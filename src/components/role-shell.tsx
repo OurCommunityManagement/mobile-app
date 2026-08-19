@@ -1,5 +1,5 @@
 import { PropsWithChildren, ReactNode } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, Pressable, ScrollView, StatusBar, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { BrandLockup, VersionFooter } from "./ui";
 import { theme } from "../theme";
@@ -27,21 +27,25 @@ export function RoleShell<T extends string>({
   onSelectTab: (tab: T) => void;
   actions?: ReactNode;
 }>) {
+  const { width } = useWindowDimensions();
+  const compactHero = width < 420;
+  const topInset = Platform.OS === "android" ? (StatusBar.currentHeight || 0) + 8 : 6;
+
   return (
     <ScrollView
       style={styles.screen}
-      contentContainerStyle={styles.content}
+      contentContainerStyle={[styles.content, { paddingTop: topInset }]}
       keyboardShouldPersistTaps="handled"
       contentInsetAdjustmentBehavior="automatic"
       alwaysBounceVertical
       showsVerticalScrollIndicator
     >
-      <LinearGradient colors={accentColors} style={styles.hero}>
-        <View style={styles.heroTop}>
+      <LinearGradient colors={accentColors} style={[styles.hero, compactHero && styles.heroCompact]}>
+        <View style={[styles.heroTop, compactHero && styles.heroTopCompact]}>
           <BrandLockup compact />
-          {actions}
+          <View style={[styles.heroActions, compactHero && styles.heroActionsCompact]}>{actions}</View>
         </View>
-        <Text style={styles.heroTitle}>{title}</Text>
+        <Text style={[styles.heroTitle, compactHero && styles.heroTitleCompact]}>{title}</Text>
         <Text style={styles.heroSubtitle}>{subtitle}</Text>
       </LinearGradient>
 
@@ -89,16 +93,34 @@ const styles = StyleSheet.create({
     padding: 22,
     gap: 10
   },
+  heroCompact: {
+    padding: 18
+  },
   heroTop: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     gap: 12
   },
+  heroTopCompact: {
+    alignItems: "flex-start",
+    flexWrap: "wrap"
+  },
+  heroActions: {
+    flexShrink: 0
+  },
+  heroActionsCompact: {
+    width: "100%",
+    alignItems: "flex-end"
+  },
   heroTitle: {
     color: "#fff",
     fontSize: 28,
     fontWeight: "800"
+  },
+  heroTitleCompact: {
+    fontSize: 24,
+    lineHeight: 30
   },
   heroSubtitle: {
     color: "#e8efff",

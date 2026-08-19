@@ -61,10 +61,22 @@ export function AdminScreen() {
     [owners.length, invoices, pendingInvoices, payments, expenses]
   );
 
+  const adminDisplayName = useMemo(() => {
+    const trimmedName = session?.staffName?.trim();
+    if (trimmedName) {
+      return trimmedName;
+    }
+    const adminEmail = session?.email?.trim();
+    if (!adminEmail) {
+      return "Admin";
+    }
+    return adminEmail.split("@")[0];
+  }, [session?.email, session?.staffName]);
+
   return (
     <RoleShell
       title={activeCommunity?.name ?? "Community admin"}
-      subtitle={`Management console for ${session?.staffName ?? "Admin"} · ${session?.email ?? ""}`}
+      subtitle={`Management console for ${adminDisplayName} · ${session?.email ?? ""}`}
       accentColors={["#10233f", "#1859d1"]}
       navItems={[
         { key: "dashboard", label: "Dashboard" },
